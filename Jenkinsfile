@@ -1,10 +1,6 @@
 pipeline{
     agent any
 
-    tools{
-        maven "maven.3.9"
-    }
-
     environment{
         IMAGE = '3laaharrrr/petclinic'
         VERSION = 'v2'
@@ -47,10 +43,10 @@ pipeline{
         
     }
 
-    post {
-        always {
-            echo 'Cleaning up workspace...'
-            cleanWs()
-        }
-    }
+    // post {
+    //     always {
+    //         echo 'Cleaning up workspace...'
+    //         cleanWs()
+    //     }
+    // }
 }
