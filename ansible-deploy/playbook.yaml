@@ -47,12 +47,6 @@
         src: ../docker-compose.yaml 
         dest: /app/docker-compose.yaml
 
-    - name: Pull the latest Docker image
-      community.docker.docker_image:
-        name: "3laaharrrr/petclinic"
-        tag: "latest"
-        pull: yes
-
     - name: stop the application using Docker Compose
       command: docker-compose down
       args:
