@@ -48,7 +48,7 @@
         dest: /app/docker-compose.yaml
 
     - name: stop the application using Docker Compose
-      command: docker-compose down
+      command: docker-compose down --remove-orphans
       args:
         chdir: /app
 
