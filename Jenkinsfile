@@ -15,8 +15,7 @@ pipeline{
             steps{
                 script{
                     echo 'building jar file.....'
-                    sh 'mvn clean'
-                    sh './mvnw package'
+                    sh 'mvn clean package'
                     echo 'jar file built'
                 }
             }
