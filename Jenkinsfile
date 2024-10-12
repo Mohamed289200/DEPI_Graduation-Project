@@ -4,6 +4,7 @@ pipeline{
     environment{
         IMAGE = '3laaharrrr/petclinic'
         VERSION = 'v2'
+        EMAIL = '3laahany946@gmail.com'
     }
 
     stages{
@@ -54,10 +55,28 @@ pipeline{
         
     }
 
-    // post {
-    //     always {
-    //         echo 'Cleaning up workspace...'
-    //         cleanWs()
-    //     }
-    // }
+    post {
+        success {
+            emailext (
+                to: "${EMAIL}",
+                from: "jenkins@test.com",
+                subject: "Deployment Successful: Jenkins Build ${currentBuild.fullDisplayName}",
+                body: """The deployment to the petclinic-server was successful.
+                
+                Job URL: ${env.BUILD_URL}
+                """
+            )
+        }
+        failure {
+            emailext (
+                to: "${EMAIL}",
+                from: "jenkins@test.com",
+                subject: "Deployment Failed: Jenkins Build ${currentBuild.fullDisplayName}",
+                body: """The deployment to the petclinic-server failed.
+                
+                Job URL: ${env.BUILD_URL}
+                """
+            )
+        }
+    }
 }
