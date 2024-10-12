@@ -4,6 +4,6 @@ EXPOSE 8080
 
 WORKDIR /app
 
-COPY ./spring-petclinic/target/*.jar app.jar
+COPY ./target/*.jar app.jar
 
 CMD java -jar app.jar
