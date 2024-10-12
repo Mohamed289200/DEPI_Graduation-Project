@@ -44,8 +44,8 @@ pipeline{
             steps {
                 script {
                     echo 'Deploying to petclinic-server...'
-                    sshagent(['petclinic-serve']) {
-                        sh "cd ansible-deploy; ansible-playbook -i inventory playbook.yaml"
+                    sshagent(['petclinic-server']) {
+                        sh "cd ansible-deploy; ansible-playbook -i inventory playbook.yaml -o StrictHostKeyChecking=no"
                     }
                     echo 'Deployment completed'
                 }
