@@ -1,8 +1,30 @@
 version: '3.8'
 
 services:
-  petclinic:
+  app:
+    container_name: petclinic-app
     image: "3laaharrrr/petclinic:latest"
     ports:
       - "8080:8080"
-    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=mysql
+      - MYSQL_URL=jdbc:mysql://mysql:3306/petclinic
+    depends_on:
+      - mysql
+
+  mysql:
+    container_name: petclinic-mysql
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_USER=petclinic
+      - MYSQL_PASSWORD=petclinic
+      - MYSQL_DATABASE=petclinic
+    volumes:
+      - petclinicvolume:/var/lib/mysql
+
+volumes:
+  petclinicvolume:
