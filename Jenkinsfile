@@ -14,7 +14,6 @@ pipeline{
         stage('Build jar file'){
             steps{
                 script{
-                    cleanWs()
                     echo 'building jar file.....'
                     sh './mvn package'
                     echo 'jar file built'
@@ -46,5 +45,12 @@ pipeline{
             }
         }
         
+    }
+
+    post {
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs()
+        }
     }
 }
