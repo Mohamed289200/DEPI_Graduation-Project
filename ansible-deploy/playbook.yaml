@@ -44,8 +44,8 @@
 
     - name: Copy docker-compose.yaml to the server
       copy:
-        src: ./docker-compose.yaml  # Path on your Jenkins server
-        dest: /app/
+        src: ../docker-compose.yaml 
+        dest: /app/docker-compose.yaml
 
     - name: Pull the latest Docker image
       community.docker.docker_image:
