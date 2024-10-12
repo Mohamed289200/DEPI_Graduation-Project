@@ -42,10 +42,10 @@
         path: /app
         state: directory
 
-    - name: Copy docker-compose.yml to the server
+    - name: Copy docker-compose.yaml to the server
       copy:
         src: ./docker-compose.yaml  # Path on your Jenkins server
-        dest: /app/docker-compose.yaml
+        dest: /app/
 
     - name: Pull the latest Docker image
       community.docker.docker_image:
