@@ -1,0 +1,70 @@
+---
+- hosts: petclinic
+  become: yes
+  tasks:
+    - name: Update APT package index
+      apt:
+        update_cache: yes
+
+    - name: Install dependencies for Docker
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Start and enable Docker service
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add azureuser to Docker group
+      ansible.builtin.user:
+        name: "azureuser"
+        groups: docker
+        append: yes
+
+    - name: Install Docker Compose
+      apt:
+        name: docker-compose
+        state: present
+
+    - name: Create a directory for the application
+      file:
+        path: /app
+        state: directory
+
+    - name: Copy docker-compose.yml to the server
+      copy:
+        src: ./docker-compose.yaml  # Path on your Jenkins server
+        dest: /app/docker-compose.yaml
+
+    - name: Pull the latest Docker image
+      community.docker.docker_image:
+        name: "3laaharrrr/petclinic"
+        tag: "latest"
+        pull: yes
+
+    - name: stop the application using Docker Compose
+      command: docker-compose down
+      args:
+        chdir: /app
+
+    - name: Start the application using Docker Compose
+      command: docker-compose up -d
+      args:
+        chdir: /app
+
+    - name: Check if the application is running
+      wait_for:
+        port: 8080
+        delay: 10
+        timeout: 60

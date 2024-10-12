@@ -40,6 +40,17 @@ pipeline{
                 }
             }
         }
+        stage('Deploy to petclinic-server') {
+            steps {
+                script {
+                    echo 'Deploying to petclinic-server...'
+                    sshagent(['petclinic-server']) {
+                        sh "ansible-playbook -o StrictHostKeyChecking=no -i inventory playbook.yaml"
+                    }
+                    echo 'Deployment completed'
+                }
+            }
+        }        
         
     }
 

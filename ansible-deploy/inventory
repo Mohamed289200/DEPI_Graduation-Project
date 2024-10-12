@@ -1,0 +1,2 @@
+[petclinic]
+52.136.244.65 ansible_ssh_user=azureuser
