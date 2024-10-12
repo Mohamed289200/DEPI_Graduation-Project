@@ -14,8 +14,9 @@ pipeline{
         stage('Build jar file'){
             steps{
                 script{
+                    cleanWs()
                     echo 'building jar file.....'
-                    sh 'mvn clean package'
+                    sh './mvn package'
                     echo 'jar file built'
                 }
             }
