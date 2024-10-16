@@ -66,6 +66,13 @@ pipeline{
                 Job URL: ${env.BUILD_URL}
                 """
             )
+
+            slackSend (
+                channel: SLACK_CHANNEL,
+                color: 'good',
+                message: "Build Success: ${env.JOB_NAME} - ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+            )
+
         }
         failure {
             emailext (
@@ -76,6 +83,12 @@ pipeline{
                 
                 Job URL: ${env.BUILD_URL}
                 """
+            )
+            
+            slackSend (
+                channel: SLACK_CHANNEL,
+                color: 'danger',
+                message: "Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
             )
         }
     }
