@@ -5,6 +5,7 @@ pipeline{
         IMAGE = '3laaharrrr/petclinic'
         VERSION = 'v2'
         EMAIL = '3laahany946@gmail.com'
+        SLACK_CHANNEL = 'jenkins'
     }
 
     stages{
@@ -84,7 +85,7 @@ pipeline{
                 Job URL: ${env.BUILD_URL}
                 """
             )
-            
+
             slackSend (
                 channel: SLACK_CHANNEL,
                 color: 'danger',
