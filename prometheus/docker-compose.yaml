@@ -1,25 +1,41 @@
-version: '3'
+version: "3.8"
+
 services:
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    volumes:
-      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml
-    ports:
-      - "9090:9090"  # Expose Prometheus on port 9090
-    restart: unless-stopped
-    networks:
-      - monitoring
-
-
-  node-exporter:
+  node_exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
-    ports:
-      - "9100:9100"  # Ensure this line is present
     restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "9100:9100"
     networks:
       - monitoring
+
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+      - prom_data:/prometheus
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+
+volumes:
+  prom_data:
 
 networks:
   monitoring:
+    driver: bridge
