@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         IMAGE = '3laaharrrr/petclinic'
-        VERSION = 'v2'
+        IMAGE_VERSION = 'v2'
         EMAIL = '3laahany946@gmail.com'
         SLACK_CHANNEL = 'jenkins'
         IGNORE_COMMIT_MESSAGE = '[skip ci]' // Commit message to ignore CI builds
@@ -72,7 +72,7 @@ pipeline {
                 }
             }
         }
-        
+
 
     //     stage('Push pom.xml File') {
     //         steps {
