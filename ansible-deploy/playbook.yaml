@@ -79,6 +79,11 @@
         src: ../prometheus/docker-compose.yaml  # Relative path in Jenkins workspace
         dest: /opt/prometheus/docker-compose.yaml
 
+    - name: stop prometheus using Docker Compose
+      command: docker-compose down --remove-orphans
+      args:
+        chdir: /opt/prometheus       
+
     - name: Start Prometheus and Node Exporter using Docker Compose
       command: docker-compose up -d
       args:
