@@ -53,7 +53,7 @@
         chdir: /app
 
     - name: Remove old Docker image
-      command: docker rmi 3laaharrrr/petclinic:latest || true
+      shell: docker rmi 3laaharrrr/petclinic:latest || true
 
     - name: Pull the latest PetClinic image
       command: docker-compose pull
