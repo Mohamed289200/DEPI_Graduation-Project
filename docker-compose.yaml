@@ -4,13 +4,26 @@ services:
   app:
     container_name: petclinic-app
     image: "3laaharrrr/petclinic:latest"
-    ports:
-      - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=mysql
       - MYSQL_URL=jdbc:mysql://mysql:3306/petclinic
+    # deploy:
+    #   replicas: 5
+    ports:
+      - "8080:8080"
     depends_on:
       - mysql
+    pull_policy: always  # Ensures that Docker always pulls the latest image version  
+
+  # nginx:
+  #   container_name: petclinic-nginx
+  #   image: nginx:stable-alpine
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+  #   depends_on:
+  #     - app    
 
   mysql:
     container_name: petclinic-mysql
