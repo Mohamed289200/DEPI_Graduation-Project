@@ -13,7 +13,6 @@ services:
       - "8080:8080"
     depends_on:
       - mysql
-    pull_policy: always  # Ensures that Docker always pulls the latest image version  
 
   # nginx:
   #   container_name: petclinic-nginx
