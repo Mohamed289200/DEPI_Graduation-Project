@@ -7,22 +7,22 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=mysql
       - MYSQL_URL=jdbc:mysql://mysql:3306/petclinic
-    # deploy:
-    #   replicas: 5
-    ports:
-      - "8080:8080"
+    deploy:
+      replicas: 5
+    # ports:
+    #   - "8080:8080"
     depends_on:
       - mysql
 
-  # nginx:
-  #   container_name: petclinic-nginx
-  #   image: nginx:stable-alpine
-  #   ports:
-  #     - "80:80"
-  #   volumes:
-  #     - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-  #   depends_on:
-  #     - app    
+  nginx:
+    container_name: petclinic-nginx
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app    
 
   mysql:
     container_name: petclinic-mysql
