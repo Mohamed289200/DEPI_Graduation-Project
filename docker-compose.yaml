@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    container_name: petclinic-app
+    # container_name: petclinic-app
     image: "3laaharrrr/petclinic:latest"
     environment:
       - SPRING_PROFILES_ACTIVE=mysql
