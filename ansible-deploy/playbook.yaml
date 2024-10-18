@@ -41,6 +41,15 @@
       file:
         path: /app
         state: directory
+    - name: Create a directory for the nginx conf file
+      file:
+        path: /app/nginx
+        state: directory    
+
+    - name: Copy default.conf to the server
+      copy:
+        src: ../nginx/default.conf 
+        dest: /app/nginx/default.conf
 
     - name: Copy docker-compose.yaml to the server
       copy:
