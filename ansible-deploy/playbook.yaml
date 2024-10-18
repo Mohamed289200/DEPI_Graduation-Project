@@ -76,9 +76,9 @@
 
     - name: Check if the application is running
       wait_for:
-        port: 8080
+        port: 80
         delay: 30
-        timeout: 90
+        timeout: 30
 
     # Prometheus and Node Exporter Setup
     - name: Create directory for Prometheus setup
