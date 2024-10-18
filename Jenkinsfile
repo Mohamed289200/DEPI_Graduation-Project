@@ -8,7 +8,7 @@ pipeline {
         SLACK_CHANNEL = 'jenkins'
         IGNORE_COMMIT_MESSAGE = '[skip ci]' // Commit message to ignore CI builds
     }
-    
+
 
     stages {
 
@@ -58,42 +58,42 @@ pipeline {
     //         }
     //     }
     
-    // }
-
-    post {
-        success {
-            emailext (
-                to: "${EMAIL}",
-                from: "jenkins@test.com",
-                subject: "Deployment Successful: Jenkins Build ${currentBuild.fullDisplayName}",
-                body: """The deployment to the petclinic-server was successful.
-                
-                Job URL: ${env.BUILD_URL}
-                """
-            )
-
-            slackSend (
-                channel: SLACK_CHANNEL,
-                color: 'good',
-                message: "Build Success: ${env.JOB_NAME} - ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-            )
-        }
-        failure {
-            emailext (
-                to: "${EMAIL}",
-                from: "jenkins@test.com",
-                subject: "Deployment Failed: Jenkins Build ${currentBuild.fullDisplayName}",
-                body: """The deployment to the petclinic-server failed.
-                
-                Job URL: ${env.BUILD_URL}
-                """
-            )
-
-            slackSend (
-                channel: SLACK_CHANNEL,
-                color: 'danger',
-                message: "Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-            )
-        }
     }
+
+    // post {
+    //     success {
+    //         emailext (
+    //             to: "${EMAIL}",
+    //             from: "jenkins@test.com",
+    //             subject: "Deployment Successful: Jenkins Build ${currentBuild.fullDisplayName}",
+    //             body: """The deployment to the petclinic-server was successful.
+                
+    //             Job URL: ${env.BUILD_URL}
+    //             """
+    //         )
+
+    //         slackSend (
+    //             channel: SLACK_CHANNEL,
+    //             color: 'good',
+    //             message: "Build Success: ${env.JOB_NAME} - ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+    //         )
+    //     }
+    //     failure {
+    //         emailext (
+    //             to: "${EMAIL}",
+    //             from: "jenkins@test.com",
+    //             subject: "Deployment Failed: Jenkins Build ${currentBuild.fullDisplayName}",
+    //             body: """The deployment to the petclinic-server failed.
+                
+    //             Job URL: ${env.BUILD_URL}
+    //             """
+    //         )
+
+    //         slackSend (
+    //             channel: SLACK_CHANNEL,
+    //             color: 'danger',
+    //             message: "Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+    //         )
+    //     }
+    // }
 }
