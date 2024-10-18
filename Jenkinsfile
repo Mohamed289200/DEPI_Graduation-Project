@@ -32,31 +32,34 @@ pipeline {
             }
         }
 
-    //     stage('Push Image to DockerHub') {
-    //         steps {
-    //             script {
-    //                 echo "Pushing image...."
-    //                 withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-    //                     sh "echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin"
-    //                     sh "docker push ${IMAGE}:${IMAGE_VERSION}"
-    //                     sh "docker push ${IMAGE}:latest"
-    //                 }
-    //                 echo 'Image pushed'    
-    //             }
-    //         }
-    //     }
+        stage('Push Image to DockerHub') {
+            steps {
+                script {
+                    echo "Pushing image...."
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh "echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin"
+                        sh "docker push ${IMAGE}:${IMAGE_VERSION}"
+                        sh "docker push ${IMAGE}:latest"
+                        echo 'Image pushed'
+                        // deleting the images after being pushed to free space on the server   
+                        sh "docker rmi -f ${IMAGE}:${IMAGE_VERSION} ${IMAGE}:latest"
+                    }
+ 
+                }
+            }
+        }
 
-    //     stage('Deploy to Petclinic Server') {
-    //         steps {
-    //             script {
-    //                 echo 'Deploying to petclinic-server...'
-    //                 sshagent(['petclinic-server']) {
-    //                     sh "cd ansible-deploy; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory playbook.yaml"
-    //                 }
-    //                 echo 'Deployment completed'
-    //             }
-    //         }
-    //     }
+        stage('Deploy to Petclinic Server') {
+            steps {
+                script {
+                    echo 'Deploying to petclinic-server...'
+                    sshagent(['petclinic-server']) {
+                        sh "cd ansible-deploy; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory playbook.yaml"
+                    }
+                    echo 'Deployment completed'
+                }
+            }
+        }
     
     }
 
