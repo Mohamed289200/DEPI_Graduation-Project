@@ -8,6 +8,7 @@ pipeline {
         SLACK_CHANNEL = 'jenkins'
         IGNORE_COMMIT_MESSAGE = '[skip ci]' // Commit message to ignore CI builds
     }
+    
 
     stages {
 
