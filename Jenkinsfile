@@ -22,6 +22,15 @@ pipeline {
             }
         }
 
+        stage('Testing') {
+            steps {
+                script {
+                    echo 'Testing......'
+                    sh 'cd spring-petclinic; mvn test'
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
