@@ -10,28 +10,12 @@ pipeline {
     }
 
     stages {
-        // stage('Increment Version') {
-        //     steps {
-        //         script {
-        //             // Increment the version in pom.xml
-        //             sh """
-        //             cd spring-petclinic; \
-        //             mvn build-helper:parse-version versions:set \
-        //             -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} \
-        //             versions:commit 
-        //             """
-        //             def temp = readFile('spring-petclinic/pom.xml') =~ '<version>(.+)</version>'
-        //             def version = temp[0][1]
-        //             env.IMAGE_VERSION = "${version}-${BUILD_NUMBER}"
-        //         }
-        //     }
-        // }
 
         stage('Build Jar File') {
             steps {
                 script {
                     echo 'Building jar file.....'
-                    sh 'cd spring-petclinic; ./mvnw clean package -DskipTests'
+                    sh 'cd spring-petclinic; mvn clean package'
                     echo 'Jar file built'
                 }
             }
@@ -47,48 +31,33 @@ pipeline {
             }
         }
 
-        stage('Push Image to DockerHub') {
-            steps {
-                script {
-                    echo "Pushing image...."
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh "echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin"
-                        sh "docker push ${IMAGE}:${IMAGE_VERSION}"
-                        sh "docker push ${IMAGE}:latest"
-                    }
-                    echo 'Image pushed'    
-                }
-            }
-        }
-
-        stage('Deploy to Petclinic Server') {
-            steps {
-                script {
-                    echo 'Deploying to petclinic-server...'
-                    sshagent(['petclinic-server']) {
-                        sh "cd ansible-deploy; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory playbook.yaml"
-                    }
-                    echo 'Deployment completed'
-                }
-            }
-        }
-
-
-    //     stage('Push pom.xml File') {
+    //     stage('Push Image to DockerHub') {
     //         steps {
     //             script {
-    //                 withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-    //                     sh "git config --global user.name 'jenkins'"
-    //                     sh "git config --global user.email 'jenkins@example.com'"
-    //                     sh "git remote set-url origin https://${USERNAME}:${PASSWORD}@github.com/Alaa7Hany/petclinic-complete-pipeline.git"
-    //                     sh "git add spring-petclinic/pom.xml"
-    //                     sh "git commit -m 'Version bump [skip ci]'" // Add the skip message here
-    //                     sh "git push origin HEAD:main"
+    //                 echo "Pushing image...."
+    //                 withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+    //                     sh "echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin"
+    //                     sh "docker push ${IMAGE}:${IMAGE_VERSION}"
+    //                     sh "docker push ${IMAGE}:latest"
     //                 }
+    //                 echo 'Image pushed'    
     //             }
     //         }
-    //     }        
-    }
+    //     }
+
+    //     stage('Deploy to Petclinic Server') {
+    //         steps {
+    //             script {
+    //                 echo 'Deploying to petclinic-server...'
+    //                 sshagent(['petclinic-server']) {
+    //                     sh "cd ansible-deploy; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory playbook.yaml"
+    //                 }
+    //                 echo 'Deployment completed'
+    //             }
+    //         }
+    //     }
+    
+    // }
 
     post {
         success {
