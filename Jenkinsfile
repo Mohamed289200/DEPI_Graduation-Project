@@ -10,26 +10,28 @@ pipeline {
     }
 
 
-    stages {
+    stages { 
+        
+    stage('Testing') {
+            steps {
+                script {
+                    echo 'Testing......'
+                    sh 'mvn test'
+                }
+            }
+        }
 
         stage('Build Jar File') {
             steps {
                 script {
                     echo 'Building jar file.....'
-                    sh 'cd spring-petclinic; ./mvnw clean package -DskipTests'
+                    sh 'mvn clean package -DskipTests'
                     echo 'Jar file built'
                 }
             }
         }
 
-        stage('Testing') {
-            steps {
-                script {
-                    echo 'Testing......'
-                    sh 'cd spring-petclinic; mvn test'
-                }
-            }
-        }
+
 
         stage('Build Docker Image') {
             steps {
