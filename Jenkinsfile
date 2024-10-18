@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building jar file.....'
-                    sh 'cd spring-petclinic; mvn clean package'
+                    sh 'cd spring-petclinic; ./mvnw clean package'
                     echo 'Jar file built'
                 }
             }
