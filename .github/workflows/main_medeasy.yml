@@ -23,12 +23,12 @@ jobs:
     - name: Build Docker image
       run: |
         docker build  \
-             -t Test .
+             -t test .
 
     - name: Tag Docker image
       run: |
-        docker tag Test ${{ secrets.ACR_USERNAME }}.azurecr.io/Test:latest
+        docker tag test ${{ secrets.ACR_USERNAME }}.azurecr.io/test:latest
 
     - name: Push Docker image to Azure Container Registry
       run: |
-        docker push ${{ secrets.ACR_USERNAME }}.azurecr.io/Test:latest 
+        docker push ${{ secrets.ACR_USERNAME }}.azurecr.io/test:latest 
